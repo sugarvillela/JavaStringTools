@@ -1,9 +1,9 @@
 package tokenizer.impl;
 
 import tokenizer.iface.IStringParser;
+import tokenizer.util.SymbolPairs;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Stack;
 
 public abstract class BaseStringParser implements IStringParser {
@@ -11,8 +11,8 @@ public abstract class BaseStringParser implements IStringParser {
     protected IWhitespaceTest whitespaceTest; // object for char matchers to test for whitespace
     protected ICaseTest caseTest;             // object for all matchers to test case sensitive or insensitive
     protected String delimiters;              // input text, list of delimiters text
-    protected char[] oMap, cMap;              // matched open/close skip char arrays
-    protected Stack<Character> cSymbols;      // Closing symbol during skip
+    protected SymbolPairs symbolPairs;        // matched open/close char arrays
+    protected Stack<Character> skipStack;     // Closing symbol during skip
     protected boolean caseSensitive;          // affects match utils
     protected boolean tokenizeDelimiter;      // save delimiter to own element
     protected boolean delimiterOnce;          // save delimiter to own element, ignore duplicates
@@ -22,7 +22,7 @@ public abstract class BaseStringParser implements IStringParser {
     protected boolean escaped;                // state
 
     protected BaseStringParser(){
-        cSymbols = new Stack<>();
+        skipStack = new Stack<>();
         tokenizeDelimiter = false;
         caseSensitive = true;
         limit = 0xFFFFFFF;
@@ -38,27 +38,25 @@ public abstract class BaseStringParser implements IStringParser {
     }
 
     public IStringParser setSkipSymbols(String openingSymbols) {
-        this.setMap(openingSymbols);
+        symbolPairs = new SymbolPairs(openingSymbols);
         return this;
     }
 
     @Override
     public IStringParser setSkipSymbols(char oneOpeningSymbol) {
-        this.setMap(String.valueOf(oneOpeningSymbol));
+        symbolPairs = new SymbolPairs(oneOpeningSymbol);
         return this;
     }
 
     @Override
     public IStringParser setSkipSymbols(char openingSymbol, char closingSymbol) {
-        this.oMap = new char[]{openingSymbol};
-        this.cMap = new char[]{closingSymbol};
+        symbolPairs = new SymbolPairs(openingSymbol, closingSymbol);
         return this;
     }
 
     @Override
     public IStringParser setSkipSymbols(char[] oMap, char[] cMap) {
-        this.oMap = oMap;
-        this.cMap = cMap;
+        symbolPairs = new SymbolPairs(oMap, cMap);
         return this;
     }
 
@@ -126,6 +124,11 @@ public abstract class BaseStringParser implements IStringParser {
         return null;
     }
 
+    @Override
+    public boolean isError(){
+        return false;
+    }
+
     /*====protected setup utils=======================================================================================*/
 
     protected abstract void initCaseTest();
@@ -144,23 +147,6 @@ public abstract class BaseStringParser implements IStringParser {
         }
     }
 
-    protected void setMap(String skips){
-        // map openers to closers, using symbols from arg
-        // if you want different symbols, pass arrays with Builder
-        oMap =  new char[skips.length()];
-        cMap =  new char[skips.length()];
-        char[] openers = new char[]{'(','{','[','<','"','\''};
-        char[] closers = new char[]{')','}',']','>','"','\''};
-        int to = 0;
-        for (int i = 0; i < openers.length; i++) {
-            if(skips.indexOf(openers[i]) != -1){
-                oMap[to]=openers[i];
-                cMap[to]=closers[i];
-                to++;
-            }
-        }
-    }
-
     /*====protected utility methods===================================================================================*/
 
     protected boolean isEscape(char symbol){
@@ -172,10 +158,11 @@ public abstract class BaseStringParser implements IStringParser {
     }
 
     protected boolean tryPushSkipSymbol(char symbol){
-        if(oMap != null){
-            for(int x = 0; x < oMap.length; x++){
-                if(symbol == oMap[x]){
-                    this.cSymbols.push(cMap[x]);// important side effect
+        if(symbolPairs != null){
+            char[] oSymbols = symbolPairs.getOSymbols();
+            for(int x = 0; x < oSymbols.length; x++){
+                if(symbol == oSymbols[x]){
+                    this.skipStack.push(symbolPairs.getCSymbols()[x]);// important side effect
                     return true;
                 }
             }
@@ -184,12 +171,12 @@ public abstract class BaseStringParser implements IStringParser {
     }
 
     protected boolean isInSkipArea(){
-        return !cSymbols.isEmpty();
+        return !skipStack.isEmpty();
     }
 
     protected boolean tryPopSkipSymbol(char symbol){
-        if(cSymbols.peek().equals(symbol)){
-            cSymbols.pop();
+        if(skipStack.peek().equals(symbol)){
+            skipStack.pop();
             return true;
         }
         return false;
@@ -215,6 +202,11 @@ public abstract class BaseStringParser implements IStringParser {
     @Override
     public int getStartPos() {
         return startPos;
+    }
+
+    @Override
+    public SymbolPairs getSymbolPairs() {
+        return symbolPairs;
     }
 
     public interface IWhitespaceTest {

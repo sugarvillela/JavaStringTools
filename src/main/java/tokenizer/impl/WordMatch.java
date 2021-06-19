@@ -16,7 +16,7 @@ public class WordMatch extends BaseStringParser {
     @Override
     public IStringParser parse() {
         hitMap.clear();
-        cSymbols.clear();
+        skipStack.clear();
         escaped = false;
         this.k = 0;
         for(int i = 0; i < text.length(); i++){

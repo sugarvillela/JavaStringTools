@@ -1,5 +1,7 @@
 package tokenizer.iface;
 
+import tokenizer.util.SymbolPairs;
+
 import java.util.List;
 
 /**A string parsing interface that applies 'skip areas' when parsing
@@ -51,7 +53,7 @@ public interface IStringParser {
     List<String> toList();
     String[] toArray();
 
-    /** Relevant if there is a multiple result */
+    /** Relevant if there is a numeric result */
     int numeric();
 
     /** Relevant if there is a multiple numeric result */
@@ -61,10 +63,14 @@ public interface IStringParser {
     /** Relevant if input text altered */
     String getText();
 
+    /** Relevant if text is checked for errors (only PairMatch implementations) */
+    boolean isError();
+
     /*=====Getters for decorator impl=================================================================================*/
 
     boolean isTokenizeDelimiter();
     boolean isDelimiterOnce();
     int getLimit();
     int getStartPos();
+    SymbolPairs getSymbolPairs();
 }

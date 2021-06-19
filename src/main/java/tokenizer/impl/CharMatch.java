@@ -15,7 +15,7 @@ public class CharMatch extends BaseStringParser {
     @Override
     public IStringParser parse() {
         hitMap.clear();
-        cSymbols.clear();
+        skipStack.clear();
         escaped = false;
         for(int i = 0; i < text.length(); i++){
             if(this.parseByChar(i) && this.numeric() >= limit){

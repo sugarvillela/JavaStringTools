@@ -1,6 +1,7 @@
 package tokenizer.decorator;
 
 import tokenizer.iface.IStringParser;
+import tokenizer.util.SymbolPairs;
 
 import java.util.List;
 
@@ -114,6 +115,11 @@ public abstract class BaseDecorator implements IStringParser {
     }
 
     @Override
+    public boolean isError() {
+        return parser.isError();
+    }
+
+    @Override
     public boolean isTokenizeDelimiter() {
         return parser.isTokenizeDelimiter();
     }
@@ -131,5 +137,10 @@ public abstract class BaseDecorator implements IStringParser {
     @Override
     public int getStartPos() {
         return parser.getStartPos();
+    }
+
+    @Override
+    public SymbolPairs getSymbolPairs() {
+        return parser.getSymbolPairs();
     }
 }
