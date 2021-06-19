@@ -209,18 +209,23 @@ public abstract class BaseStringParser implements IStringParser {
         return symbolPairs;
     }
 
+    /*====Interfaces, implemented anonymously in subclasses===========================================================*/
+
     public interface IWhitespaceTest {
         default boolean eq(char symbol) {
             return false;
         }
     }
+
     public interface ICaseTest {
         default boolean isMatch(char c, int index) {
             return false;
         }
+
         default boolean contains(char c) {
             return false;
         }
+
         default char swapCase(char c){
             return Character.isUpperCase(c)? Character.toLowerCase(c) : Character.toUpperCase(c);
         }

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class PairMatch extends BaseStringParser {
     public static final int NOT_SET = -1, ORPHAN_SYMBOL = -2;
     private final Stack<WrapNode> wrapStack;
-    protected SymbolPairs symbolPairs;      // matched open/close char arrays
+    private SymbolPairs delimiterPairs;      // matched open/close char arrays
     private int[] hitMap;
 
     public PairMatch() {
@@ -21,7 +21,7 @@ public class PairMatch extends BaseStringParser {
     @Override
     public IStringParser setDelimiter(String delimiters) {
         this.delimiters = delimiters;
-        symbolPairs = new SymbolPairs(delimiters);
+        delimiterPairs = new SymbolPairs(delimiters);
         return this;
     }
 
@@ -98,10 +98,10 @@ public class PairMatch extends BaseStringParser {
     }
 
     private boolean tryPushSource(int i){
-        char[] oSymbols = symbolPairs.getOSymbols();
+        char[] oSymbols = delimiterPairs.getOSymbols();
         for(int x = 0; x < oSymbols.length; x++){
             if(oSymbols[x] == text.charAt(i)){
-                this.wrapStack.push(new WrapNode(i, symbolPairs.getCSymbols()[x]));
+                this.wrapStack.push(new WrapNode(i, delimiterPairs.getCSymbols()[x]));
                 return true;
             }
         }
@@ -109,7 +109,7 @@ public class PairMatch extends BaseStringParser {
     }
 
     private boolean isOrphanCloser(int i){
-        char[] cSymbols = symbolPairs.getCSymbols();
+        char[] cSymbols = delimiterPairs.getCSymbols();
         for(int x = 0; x < cSymbols.length; x++){
             if(cSymbols[x] == text.charAt(i)){
                 return true;

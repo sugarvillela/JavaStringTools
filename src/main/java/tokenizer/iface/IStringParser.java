@@ -35,11 +35,12 @@ public interface IStringParser {
     IStringParser setCaseSensitive(boolean caseSensitive);
 
     /**Tokenizer discards delimiters by default
-     * Setting delimiterToElement causes delimiter to be written to
+     * Setting tokenizeDelimiter causes each delimiter to be written to
      * its own element (repeated delimiters are not ignored) */
     IStringParser setTokenizeDelimiter(boolean tokenize);
 
-    /**Same as delimiterToElement() except repeated delimiters are ignored */
+    /**Same as setTokenizeDelimiter() except repeated delimiters are ignored
+     * (e.g. three identical adjacent delimiters become one element */
     IStringParser setTokenizeDelimiterOnce(boolean tokenizeOnce);
 
     /*=====Run========================================================================================================*/
@@ -49,7 +50,7 @@ public interface IStringParser {
 
     /*=====State after run============================================================================================*/
 
-    /** Relevant if there is a tokenized result */
+    /** Relevant if there is a tokenized string result */
     List<String> toList();
     String[] toArray();
 

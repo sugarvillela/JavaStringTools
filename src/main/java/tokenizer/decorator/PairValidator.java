@@ -3,8 +3,6 @@ package tokenizer.decorator;
 import tokenizer.iface.IStringParser;
 import tokenizer.impl.PairMatch;
 
-import java.util.List;
-
 public class PairValidator extends BaseDecorator {
     private boolean errState;
     private int numSymbols;
