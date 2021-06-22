@@ -1,11 +1,11 @@
-package tokenizer.decorator;
+package tokenizer.composite;
 
 import tokenizer.iface.IStringParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseTok extends BaseDecorator {
+public abstract class BaseTok extends BaseComposite {
     protected final List<String> tokens;
 
     protected BaseTok(IStringParser parser) {

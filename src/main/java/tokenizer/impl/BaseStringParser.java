@@ -1,7 +1,10 @@
 package tokenizer.impl;
 
 import tokenizer.iface.IStringParser;
-import tokenizer.util.SymbolPairs;
+import tokenizer.util_iface.ICaseTest;
+import tokenizer.util_iface.ISymbolPairs;
+import tokenizer.util_iface.IWhitespaceTest;
+import tokenizer.util_impl.SymbolPairs;
 
 import java.util.List;
 import java.util.Stack;
@@ -11,7 +14,7 @@ public abstract class BaseStringParser implements IStringParser {
     protected IWhitespaceTest whitespaceTest; // object for char matchers to test for whitespace
     protected ICaseTest caseTest;             // object for all matchers to test case sensitive or insensitive
     protected String delimiters;              // input text, list of delimiters text
-    protected SymbolPairs symbolPairs;        // matched open/close char arrays
+    protected ISymbolPairs symbolPairs;       // matched open/close char arrays
     protected Stack<Character> skipStack;     // Closing symbol during skip
     protected boolean caseSensitive;          // affects match utils
     protected boolean tokenizeDelimiter;      // save delimiter to own element
@@ -158,13 +161,11 @@ public abstract class BaseStringParser implements IStringParser {
     }
 
     protected boolean tryPushSkipSymbol(char symbol){
-        if(symbolPairs != null){
-            char[] oSymbols = symbolPairs.getOSymbols();
-            for(int x = 0; x < oSymbols.length; x++){
-                if(symbol == oSymbols[x]){
-                    this.skipStack.push(symbolPairs.getCSymbols()[x]);// important side effect
-                    return true;
-                }
+        char[] oSymbols = symbolPairs.getOSymbols();
+        for(int x = 0; x < oSymbols.length; x++){
+            if(symbol == oSymbols[x]){
+                this.skipStack.push(symbolPairs.getCSymbols()[x]);// important side effect
+                return true;
             }
         }
         return false;
@@ -182,7 +183,7 @@ public abstract class BaseStringParser implements IStringParser {
         return false;
     }
 
-    /*=====Getters for decorator impl=================================================================================*/
+    /*=====Getters for composite impl=================================================================================*/
 
     @Override
     public boolean isTokenizeDelimiter() {
@@ -205,29 +206,17 @@ public abstract class BaseStringParser implements IStringParser {
     }
 
     @Override
-    public SymbolPairs getSymbolPairs() {
+    public ISymbolPairs getSymbolPairs() {
         return symbolPairs;
     }
 
-    /*====Interfaces, implemented anonymously in subclasses===========================================================*/
-
-    public interface IWhitespaceTest {
-        default boolean eq(char symbol) {
-            return false;
-        }
+    @Override
+    public IStringParser getCompositeImpl() {
+        return null;
     }
 
-    public interface ICaseTest {
-        default boolean isMatch(char c, int index) {
-            return false;
-        }
+    /*=====Setters for composite impl=================================================================================*/
 
-        default boolean contains(char c) {
-            return false;
-        }
-
-        default char swapCase(char c){
-            return Character.isUpperCase(c)? Character.toLowerCase(c) : Character.toUpperCase(c);
-        }
-    }
+    @Override
+    public void setNumericArray(int[] numericArray) {}
 }

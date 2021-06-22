@@ -2,7 +2,7 @@ package tokenizer.impl;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tokenizer.decorator.WordReplace;
+import tokenizer.composite.WordReplace;
 import tokenizer.iface.IStringParser;
 
 import java.util.List;

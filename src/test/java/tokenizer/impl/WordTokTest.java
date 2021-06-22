@@ -1,7 +1,7 @@
 package tokenizer.impl;
 
 import org.junit.jupiter.api.Test;
-import tokenizer.decorator.WordTok;
+import tokenizer.composite.WordTok;
 import tokenizer.iface.IStringParser;
 
 import static org.junit.jupiter.api.Assertions.*;

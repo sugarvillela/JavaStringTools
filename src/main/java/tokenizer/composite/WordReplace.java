@@ -1,11 +1,11 @@
-package tokenizer.decorator;
+package tokenizer.composite;
 
 import tokenizer.iface.IStringParser;
 import tokenizer.impl.WordMatch;
 
 import java.util.List;
 
-public class WordReplace extends BaseDecorator {
+public class WordReplace extends BaseComposite {
     private final String replacementText;
 
     public WordReplace(String replacementText) {

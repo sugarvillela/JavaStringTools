@@ -1,6 +1,8 @@
 package tokenizer.impl;
 
 import tokenizer.iface.IStringParser;
+import tokenizer.util_iface.ICaseTest;
+import tokenizer.util_impl.SymbolPairsNop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,9 @@ public class WordMatch extends BaseStringParser {
 
     @Override
     public IStringParser parse() {
+        if(symbolPairs == null){
+            symbolPairs = new SymbolPairsNop();
+        }
         hitMap.clear();
         skipStack.clear();
         escaped = false;

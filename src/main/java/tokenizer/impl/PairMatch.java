@@ -1,7 +1,9 @@
 package tokenizer.impl;
 
 import tokenizer.iface.IStringParser;
-import tokenizer.util.SymbolPairs;
+import tokenizer.util_iface.ISymbolPairs;
+import tokenizer.util_impl.SymbolPairs;
+import tokenizer.util_impl.SymbolPairsNop;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.stream.Collectors;
 public class PairMatch extends BaseStringParser {
     public static final int NOT_SET = -1, ORPHAN_SYMBOL = -2;
     private final Stack<WrapNode> wrapStack;
-    private SymbolPairs delimiterPairs;      // matched open/close char arrays
+    private ISymbolPairs delimiterPairs;      // matched open/close char arrays
     private int[] hitMap;
 
     public PairMatch() {
@@ -27,12 +29,17 @@ public class PairMatch extends BaseStringParser {
 
     @Override
     public IStringParser parse() {
-        this.initHitMap();
-        skipStack.clear();
-        wrapStack.clear();
-        escaped = false;
-        for(int i = 0; i < text.length(); i++){
-            this.parseByChar(i);
+        if(delimiterPairs != null){
+            if(symbolPairs == null){
+                symbolPairs = new SymbolPairsNop();
+            }
+            this.initHitMap();
+            skipStack.clear();
+            wrapStack.clear();
+            escaped = false;
+            for(int i = 0; i < text.length(); i++){
+                this.parseByChar(i);
+            }
         }
         return this;
     }
@@ -126,5 +133,10 @@ public class PairMatch extends BaseStringParser {
             this.iSource = iSource;
             this.cChar = cChar;
         }
+    }
+
+    @Override
+    public void setNumericArray(int[] numericArray) {
+        this.hitMap = numericArray;
     }
 }

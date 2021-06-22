@@ -1,12 +1,13 @@
 package tokenizer.simpl;
 
-import tokenizer.util.SymbolPairs;
+import tokenizer.util_iface.ISymbolPairs;
+import tokenizer.util_impl.SymbolPairs;
 
 import java.util.Stack;
 
 public class CharUnwrap {
     private final Stack<WrapNode> wrapStack;// Closing symbol, with index of matching opener
-    protected SymbolPairs symbolPairs;      // matched open/close char arrays
+    protected ISymbolPairs symbolPairs;     // matched open/close char arrays
     private int limit;                      // number of tokens allowed
     private String text;
 

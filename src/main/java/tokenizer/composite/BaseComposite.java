@@ -1,14 +1,14 @@
-package tokenizer.decorator;
+package tokenizer.composite;
 
 import tokenizer.iface.IStringParser;
-import tokenizer.util.SymbolPairs;
+import tokenizer.util_iface.ISymbolPairs;
 
 import java.util.List;
 
-public abstract class BaseDecorator implements IStringParser {
+public abstract class BaseComposite implements IStringParser {
     protected final IStringParser parser;
 
-    protected BaseDecorator(IStringParser parser) {
+    protected BaseComposite(IStringParser parser) {
         this.parser = parser;
     }
 
@@ -119,6 +119,8 @@ public abstract class BaseDecorator implements IStringParser {
         return parser.isError();
     }
 
+    /*=====Getters for composite impl=================================================================================*/
+
     @Override
     public boolean isTokenizeDelimiter() {
         return parser.isTokenizeDelimiter();
@@ -140,7 +142,19 @@ public abstract class BaseDecorator implements IStringParser {
     }
 
     @Override
-    public SymbolPairs getSymbolPairs() {
+    public ISymbolPairs getSymbolPairs() {
         return parser.getSymbolPairs();
+    }
+
+    @Override
+    public IStringParser getCompositeImpl() {
+        return parser;
+    }
+
+    /*=====Setters for composite impl=================================================================================*/
+
+    @Override
+    public void setNumericArray(int[] numericArray) {
+        parser.setNumericArray(numericArray);
     }
 }

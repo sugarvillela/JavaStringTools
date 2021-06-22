@@ -1,6 +1,6 @@
 package tokenizer.simpl;
 
-import tokenizer.impl.BaseStringParser;
+import tokenizer.util_iface.IWhitespaceTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import java.util.List;
  * Option to limit number of splits */
 public class CharTokSimple {
     private static final char escape = '\\';
-    private BaseStringParser.IWhitespaceTest whitespace;
+    private IWhitespaceTest whitespace;
     private final int limit;
     private String text;
     private char delimiter;
@@ -40,7 +40,7 @@ public class CharTokSimple {
     public CharTokSimple setDelimiter(char... delimiter) {
         this.delimiter = (delimiter.length == 0)? '\0' : delimiter[0];
         if(this.delimiter == ' '){
-            whitespace = new BaseStringParser.IWhitespaceTest() {
+            whitespace = new IWhitespaceTest() {
                 
                 public boolean eq(char symbol) {
                     return ((int)symbol) < 33;
@@ -48,7 +48,7 @@ public class CharTokSimple {
             };
         }
         else{
-            whitespace = new BaseStringParser.IWhitespaceTest() {
+            whitespace = new IWhitespaceTest() {
                 
                 public boolean eq(char symbol) {
                     return false;

@@ -1,8 +1,11 @@
 package tokenizer.impl;
 
 import org.junit.jupiter.api.Test;
-import tokenizer.decorator.CharTok;
+import tokenizer.composite.CharTok;
 import tokenizer.iface.IStringParser;
+import tokenizer.composite2.IndentUtil;
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -133,5 +136,27 @@ class CharTokTest {
 //        unSplitOr = String.join("-", splitOr);
 //        System.out.println(unSplitOr);
 //        assertEquals("two-three", unSplitOr);
+    }
+    @Test
+    void givenIndentedText_shouldTokenizeWithIndentsRecorded() {
+        String text = "    Indented text:   three,    four";
+        String expected, actual;
+        IndentUtil indentUtil = new IndentUtil();
+        String[] tok = indentUtil.setText(text).parse().toArray();
+
+        expected = "Indented|text:|three,|four";
+        actual = String.join("|", tok);
+        System.out.println(actual);
+        assertEquals(expected, actual);
+
+//        List<Integer> hitMap = indentUtil.numericToList();
+//        actual = hitMap.stream().map(String::valueOf).collect(Collectors.joining(","));
+//        System.out.println(actual);
+
+        int[] indentMap = indentUtil.getIndentMap();
+        expected = "[4, 1, 3, 4]";
+        actual = Arrays.toString(indentMap);
+        System.out.println(actual);
+        assertEquals(expected, actual);
     }
 }

@@ -1,6 +1,8 @@
-package tokenizer.util;
+package tokenizer.util_impl;
 
-public class SymbolPairs {
+import tokenizer.util_iface.ISymbolPairs;
+
+public class SymbolPairs implements ISymbolPairs {
     private final char[] oSymbols, cSymbols;
 
     public SymbolPairs(String symbolList) {
@@ -44,9 +46,12 @@ public class SymbolPairs {
         }
     }
 
+    @Override
     public char[] getOSymbols(){
         return oSymbols;
     }
+
+    @Override
     public char[] getCSymbols(){
         return cSymbols;
     }

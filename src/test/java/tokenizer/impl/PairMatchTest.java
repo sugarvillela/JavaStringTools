@@ -1,8 +1,8 @@
 package tokenizer.impl;
 
 import org.junit.jupiter.api.Test;
-import tokenizer.decorator.PairUnwrap;
-import tokenizer.decorator.PairValidator;
+import tokenizer.composite2.PairUnwrap;
+import tokenizer.composite.PairValidator;
 import tokenizer.iface.IStringParser;
 
 import java.util.Arrays;
@@ -47,18 +47,6 @@ public class PairMatchTest {
         System.out.println(Arrays.toString(actual));
         assertArrayEquals(expected, actual);
     }
-//    @Test
-//    void givenLimit_getHitMap() {
-//        IStringParser pairMatch = new PairMatch().setDelimiter("[{").setLimit(2);
-//        String text;
-//        int[] actual, expected;
-//
-//        text = "[{key1},{key2}]";
-//        expected = new int[]{16, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 0};
-//        actual = pairMatch.setText(text).parse().numericToArray();
-//        System.out.println(Arrays.toString(actual));
-//        assertArrayEquals(expected, actual);
-//    }
     @Test
     void givenOrphanSymbol_setMinus2() {
         IStringParser pairMatch = new PairMatch().setDelimiter("[{").setSkipSymbols("\"");
@@ -124,16 +112,25 @@ public class PairMatchTest {
     void givenNestedSymbols_shouldUnwrapCorrectly() {
         IStringParser unwrap = new PairUnwrap().setDelimiter("[{(");
         String text, expected, actual;
+        int[] expectedHitMap, actualHitMap;
 
         text = "[{key1:val1},{key2:val2}]";
         expected = "{key1:val1},{key2:val2}";
         actual = unwrap.setText(text).parse().getText();
         assertEquals(expected, actual);
 
+        expectedHitMap = new int[]{10, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, 22, -1, -1, -1, -1, -1, -1, -1, -1, -1, 12};
+        actualHitMap = unwrap.numericToArray();
+        assertArrayEquals(expectedHitMap, actualHitMap);
+
         text = "[{key1:val1,key2:val2}]";
         expected = "key1:val1,key2:val2";
         actual = unwrap.setText(text).parse().getText();
         assertEquals(expected, actual);
+
+        expectedHitMap = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+        actualHitMap = unwrap.numericToArray();
+        assertArrayEquals(expectedHitMap, actualHitMap);
 
         text = "[{key1:val1}],[{key2:val2}]";
         expected = "[{key1:val1}],[{key2:val2}]";

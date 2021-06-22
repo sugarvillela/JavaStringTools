@@ -1,6 +1,6 @@
 package tokenizer.iface;
 
-import tokenizer.util.SymbolPairs;
+import tokenizer.util_iface.ISymbolPairs;
 
 import java.util.List;
 
@@ -67,11 +67,16 @@ public interface IStringParser {
     /** Relevant if text is checked for errors (only PairMatch implementations) */
     boolean isError();
 
-    /*=====Getters for decorator impl=================================================================================*/
+    /*=====Getters for composite impl=================================================================================*/
 
     boolean isTokenizeDelimiter();
     boolean isDelimiterOnce();
     int getLimit();
     int getStartPos();
-    SymbolPairs getSymbolPairs();
+    ISymbolPairs getSymbolPairs();
+    IStringParser getCompositeImpl();
+
+    /*=====Setters for composite impl=================================================================================*/
+
+    void setNumericArray(int[] numericArray);
 }

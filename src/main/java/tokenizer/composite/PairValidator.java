@@ -1,9 +1,9 @@
-package tokenizer.decorator;
+package tokenizer.composite;
 
 import tokenizer.iface.IStringParser;
 import tokenizer.impl.PairMatch;
 
-public class PairValidator extends BaseDecorator {
+public class PairValidator extends BaseComposite {
     private boolean errState;
     private int numSymbols;
 

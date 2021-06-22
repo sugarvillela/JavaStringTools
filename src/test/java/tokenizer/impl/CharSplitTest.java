@@ -2,7 +2,7 @@ package tokenizer.impl;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tokenizer.decorator.CharSplit;
+import tokenizer.composite2.CharSplit;
 import tokenizer.iface.IStringParser;
 
 class CharSplitTest {

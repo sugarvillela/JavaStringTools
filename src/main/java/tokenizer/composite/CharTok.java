@@ -1,4 +1,4 @@
-package tokenizer.decorator;
+package tokenizer.composite;
 
 import tokenizer.iface.IStringParser;
 import tokenizer.impl.CharMatch;

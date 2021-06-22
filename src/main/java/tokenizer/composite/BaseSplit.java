@@ -1,4 +1,4 @@
-package tokenizer.decorator;
+package tokenizer.composite;
 
 import tokenizer.iface.IStringParser;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * You can override the size with setLimit().
  * SplitUtil always pads unfilled elements with null
  */
-public class BaseSplit extends BaseDecorator {
+public class BaseSplit extends BaseComposite {
     protected BaseSplit(IStringParser parser) {
         super(parser);
         parser.setLimit(2);

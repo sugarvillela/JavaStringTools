@@ -1,11 +1,11 @@
-package tokenizer.decorator;
+package tokenizer.composite;
 
 import tokenizer.iface.IStringParser;
 import tokenizer.impl.CharMatch;
 
 import java.util.List;
 
-public class CharReplace extends BaseDecorator {
+public class CharReplace extends BaseComposite {
     private final String replacementText;
 
     public CharReplace(String replacementText) {
