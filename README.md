@@ -94,3 +94,6 @@ is used to define them: just pass the list of opening symbols and the area will 
 ### Tab-to-space filter
   - Converts a tab character to four spaces
   - Run this before tokenizing with the Indent Counter
+### SpaceUtil
+  - If multiple consecutive spaces exist in a String, converts all to single
+  - Preserves indent at beginning of string
