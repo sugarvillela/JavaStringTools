@@ -3,9 +3,9 @@ package tokenizer.impl;
 import org.junit.jupiter.api.Test;
 import tokenizer.composite.CharTok;
 import tokenizer.iface.IStringParser;
-import tokenizer.composite2.IndentUtil;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -136,6 +136,19 @@ class CharTokTest {
 //        unSplitOr = String.join("-", splitOr);
 //        System.out.println(unSplitOr);
 //        assertEquals("two-three", unSplitOr);
+    }
+
+    @Test
+    void givenSpecialCase_shouldNotLoseLastChar() {
+        String text = "    Indented text:   three,    four  (five,    six) {";
+        String expected, actual;
+        IStringParser tokenizer = new CharTok().setDelimiter(" ").setSkipSymbols('(');
+        List<String> t = tokenizer.setText(text).parse().toList();//.setStartPos(4)
+        actual = String.join(" ", t);
+        System.out.println(Arrays.toString(tokenizer.numericToArray()));
+        expected = "Indented text: three, four (five,    six) {";
+        System.out.println(actual);
+        assertEquals(expected, actual);
     }
 
 }

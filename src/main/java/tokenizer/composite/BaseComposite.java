@@ -49,6 +49,12 @@ public abstract class BaseComposite implements IStringParser {
     }
 
     @Override
+    public IStringParser setSkipSymbols(ISymbolPairs symbolPairs) {
+        parser.setSkipSymbols(symbolPairs);
+        return this;
+    }
+
+    @Override
     public IStringParser setStartPos(int startPos) {
         parser.setStartPos(startPos);
         return this;

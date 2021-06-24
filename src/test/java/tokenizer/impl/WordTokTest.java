@@ -29,5 +29,11 @@ public class WordTokTest {
         actual = String.join("|", tokenizer.setText(text).parse().toList());
         System.out.println(actual);
         assertEquals(expected, actual);
+
+        text = "one two three four---five six seven---a";
+        expected = "one two three four|---|five six seven|---|a";
+        actual = String.join("|", tokenizer.setText(text).parse().toList());
+        System.out.println(actual);
+        assertEquals(expected, actual);
     }
 }

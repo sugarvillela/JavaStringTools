@@ -25,6 +25,7 @@ public interface IStringParser {
     IStringParser setSkipSymbols(char oneOpeningSymbol);
     IStringParser setSkipSymbols(char openingSymbol, char closingSymbol);
     IStringParser setSkipSymbols(char[] oMap, char[] cMap);
+    IStringParser setSkipSymbols(ISymbolPairs symbolPairs);
 
     /** Should parse all but make no changes before start index reached */
     IStringParser setStartPos(int startPos);

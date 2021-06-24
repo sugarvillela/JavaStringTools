@@ -64,6 +64,12 @@ public abstract class BaseStringParser implements IStringParser {
     }
 
     @Override
+    public IStringParser setSkipSymbols(ISymbolPairs symbolPairs) {
+        this.symbolPairs = symbolPairs;
+        return this;
+    }
+
+    @Override
     public IStringParser setStartPos(int startPos) {
         this.startPos = startPos;
         return this;

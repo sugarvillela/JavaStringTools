@@ -55,4 +55,14 @@ public class VariousUtilTest {
         System.out.println(actual);
         assertEquals(expected, actual);
     }
+    @Test
+    void givenSpecialCase_shouldNotLoseLastChar() {
+        String text = "    Indented text:   three,    four  (five,    six)  {";
+        String expected, actual;
+        IStringParser spaceUtil = new SpaceUtil().setSkipSymbols('(');
+        actual = spaceUtil.setText(text).parse().getText();
+        expected = "    Indented text: three, four (five,    six) {";
+        System.out.println(actual);
+        assertEquals(expected, actual);
+    }
 }

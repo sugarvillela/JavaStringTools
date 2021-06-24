@@ -32,9 +32,8 @@ public class SpaceUtil extends BaseTok {
                 }
             }
             String text = parser.getText();
-            ISymbolPairs symbolPairs = parser.getSymbolPairs();
             IStringParser tokenizer = new CharTok().setStartPos(i).setDelimiter(" ")
-                    .setSkipSymbols(symbolPairs.getOSymbols(), symbolPairs.getCSymbols()).setText(text);
+                    .setSkipSymbols(parser.getSymbolPairs()).setText(text);
             parser.setText(String.join(" ", tokenizer.parse().toList()));
         }
         return this;
